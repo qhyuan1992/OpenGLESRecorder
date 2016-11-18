@@ -43,7 +43,7 @@ public class WindowSurface {
         mEglDisplay = mEgl.eglGetCurrentDisplay();
         mWindowSurface = mEgl.eglGetCurrentSurface(EGL10.EGL_DRAW);
         mEncoderSurface = createWindowSurface(encodeSurface);
-        Log.i(TAG, "mEgl.eglGetError:" + mEgl.eglGetError());
+        Log.i(TAG, "eglCreateWindowSurface:" + mEgl.eglGetError());
     }
 
     public EGLSurface createWindowSurface(Surface surface) {
@@ -61,7 +61,7 @@ public class WindowSurface {
 
     public void swapEncoderSurfaceBuffer() {
         if (mEgl.eglSwapBuffers(mEglDisplay, mEncoderSurface)) {
-            Log.i(TAG, "swapEncoderSurfaceBuffer succceed");
+            Log.i(TAG, "eglSwapBuffers:" + mEgl.eglGetError());
         }
     }
 

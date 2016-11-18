@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
+ * HandlerThread receive message to decide whether encode or not
  * Created by weiersyuan on 2016/11/17.
  */
 

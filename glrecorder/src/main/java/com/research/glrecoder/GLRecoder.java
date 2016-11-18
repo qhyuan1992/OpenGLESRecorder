@@ -35,6 +35,7 @@ public class GLRecoder {
 
     private static  boolean isRecord;
 
+    private static int mTick;
 
     // A simple EGL config chooser for get recordable config.
     private static GLSurfaceView.EGLConfigChooser mDefaultConfigChooser = new GLSurfaceView.EGLConfigChooser() {
@@ -65,7 +66,6 @@ public class GLRecoder {
             return configs[0];
         }
     };
-    private static int mTick;
 
     public static GLSurfaceView.EGLConfigChooser getEGLConfigChooser() {
         return mDefaultConfigChooser;
