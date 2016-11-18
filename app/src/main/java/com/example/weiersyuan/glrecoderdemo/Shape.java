@@ -19,7 +19,6 @@ import org.obj2openjl.v3.model.OpenGLModelData;
 import org.obj2openjl.v3.model.RawOpenGLModel;
 
 public class Shape {
-	private static String TAG = "Shape";
 	private float vertices[];
 	private float texures[];
 	private float normals[];
@@ -99,6 +98,12 @@ public class Shape {
 		// 生成FrameBuffer
 		GLRecoder.beginDraw();
 
+		drawRec(mvpMatrix, mMatrix);
+
+		GLRecoder.endDraw();
+	}
+
+	private void drawRec(float[] mvpMatrix, float[] mMatrix) {
 		GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
 		int frameBufferVertexShader = loaderShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
 		int frameBufferFagmentShader = loaderShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
@@ -129,15 +134,9 @@ public class Shape {
 		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mLoadedTextureId);
 		GLES20.glUniform1i(fbuTextureHandle, 0);
 		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, mVertexCount);
-
-		GLRecoder.endDraw();
-
-//	    GLES20.glDeleteTextures(1, textures, 0);
-//	    GLES20.glDeleteFramebuffers(1, framebuffers, 0);
-//	    GLES20.glDeleteRenderbuffers(1, renderbuffers, 0);
 	}
 
-	
+
 	private int loaderShader(int type, String shaderCode) {
 		int shader = GLES20.glCreateShader(type);
 		GLES20.glShaderSource(shader, shaderCode);

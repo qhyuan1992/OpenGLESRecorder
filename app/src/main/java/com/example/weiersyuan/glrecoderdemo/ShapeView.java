@@ -11,6 +11,9 @@ import android.view.MotionEvent;
 
 import com.research.glrecoder.GLRecoder;
 
+import java.io.File;
+import java.io.IOException;
+
 public class ShapeView extends GLSurfaceView{
 	public static int sScreenWidth;
 	public static int sScreenHeight;
@@ -21,6 +24,7 @@ public class ShapeView extends GLSurfaceView{
 	public ShapeView(Context context) {
 		super(context);
 		setEGLContextClientVersion(2);
+		setEGLConfigChooser(GLRecoder.getEGLConfigChooser());
 		mMyRender = new MyRender(context);
 		setRenderer(mMyRender);
 	}
@@ -30,7 +34,7 @@ public class ShapeView extends GLSurfaceView{
         float x = e.getX();
         switch (e.getAction()) {
         case MotionEvent.ACTION_MOVE:
-            float dy = y - mPreviousY;
+			float dy = y - mPreviousY;
             float dx = x - mPreviousX;
             mMyRender.yAngle += dx;
             mMyRender.xAngle+= dy;
@@ -42,6 +46,7 @@ public class ShapeView extends GLSurfaceView{
     }
 	
 	class MyRender implements Renderer {
+		private EGLConfig mEglConfig;
 		private Shape mRectangle;
 		float yAngle;
     	float xAngle;
@@ -51,6 +56,7 @@ public class ShapeView extends GLSurfaceView{
     	}
 		@Override
 		public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+			mEglConfig = config;
 			GLES20.glClearColor(0.5f, 0.5f, 0.5f, 1);
 			mRectangle = new Shape(mContext);
 			GLES20.glEnable(GLES20.GL_DEPTH_TEST);
@@ -58,7 +64,12 @@ public class ShapeView extends GLSurfaceView{
 
 		@Override
 		public void onSurfaceChanged(GL10 gl, int width, int height) {
-			GLRecoder.init(width, height,null);
+			GLRecoder.init(width, height,mEglConfig);
+			try {
+				GLRecoder.startEncoder(new File("/sdcard/zzzzzzz.mp4"));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			sScreenWidth = width;
 			sScreenHeight = height;
 			GLES20.glViewport(0, 0, width, height);

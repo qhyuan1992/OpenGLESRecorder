@@ -48,12 +48,6 @@ public class ScreenRectangle {
     public int getmFrameBufferID() {
         return mFrameBufferID;
     }
-    public int getmOffScreenTextureID() {
-        return mOffScreenTexture;
-    }
-    public int getmRenderBufferID() {
-        return mRenderBuffer;
-    }
 
     private void initGL() {
         program = GLUtil.createProgram(VERTEX_SHADER_CODE, FRAGMENT_SHADER_CODE);
@@ -89,6 +83,9 @@ public class ScreenRectangle {
         GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, framebufferId);
         GLUtil.checkGLError("glBindFramebuffer");
         mFrameBufferID = framebufferId;
+        GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, mOffScreenTexture, 0);
+        GLUtil.checkGLError("beginDraw glFramebufferTexture2D");
+        GLES20.glFramebufferRenderbuffer(GLES20.GL_FRAMEBUFFER, GLES20.GL_DEPTH_ATTACHMENT, GLES20.GL_RENDERBUFFER, mRenderBuffer);
         GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
     }
 
